@@ -40,7 +40,7 @@ class Customer(AbstractUser):
     USERNAME_FIELD = 'email'
     address = models.CharField(_('Address'), max_length=1024)
     email = models.EmailField(_('Email'), unique=True)
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = []
 
     @property
     def cart(self):
