@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn caep.wsgi
+web: gunicorn myproject.wsgi
