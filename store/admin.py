@@ -4,7 +4,6 @@ import store.models as models
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'quantity', 'reserved', 'disposal', 'price')
-    list_filter = ('available', )
 
 
 admin.site.register(models.Product, ProductAdmin)
