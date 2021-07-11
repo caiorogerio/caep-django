@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static l10n %}
+{% block content %}
+        <main>
+            <section id="form">
+                <h1>{{ title }}</h1>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Cadastrar">
+                </form>
+            </section>
+        </main>
+{% endblock %}

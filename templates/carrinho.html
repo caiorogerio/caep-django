@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static l10n %}
+{% block content %}
+        <main>
+            <section id="cart">
+             <h1>Meu carrinho</h1>
+                {% if order.order_items.count %}
+                <ul>
+                    {% for item in order.order_items.all %}
+                    <li>
+                        <p class="image"><img src="{% static item.product.image %}" alt="Imagem de {{ item.product.title }}"></p>
+                        <h1>{{ item.product.title }}</h1>
+                        <p>{{ item.product.description }}</p>
+                        <h2>{{ item.price }}</h2>
+                        <form action="{% url 'add-to-cart' %}" method="get">
+                            <input type="hidden" name="product" value="{{ item.product.pk }}">
+                            <input type="number" name="quantity" min="1" max="{{ item.product.disposal }}" value="{{ item.quantity }}">
+                            <input type="submit" value="Adicionar">
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <h2>Total da compra: R${{ order.total_price | localize }}</h2>
+                {% else %}
+                <p>Seu carrinho está vazio</p>
+                {% endif %}
+            </section>
+        </main>
+{% endblock %}

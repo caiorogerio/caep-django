@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+        <main>
+            <section id="article">
+             <h1>Artigos</h1>
+                <ul>
+                    {% for product in products %}
+                    <li>
+                        <p class="image"><img src="{% static product.image %}" alt="Imagem de {{ product.title }}"></p>
+                        <h1>{{ product.title }}</h1>
+                        <p>{{ product.description }}</p>
+                        <h2>{{ product.price }}</h2>
+                        <form action="{% url 'add-to-cart' %}" method="get">
+                            <input type="hidden" name="product" value="{{ product.pk }}">
+                            <input type="number" name="quantity" min="1" max="{{ product.disposal }}" {% if product.disposal <= 0 %}value="0" disabled="disabled"{% else %}value="1"{% endif %}>
+                            <input type="submit" value="Adicionar" {% if product.disposal <= 0 %}disabled="disabled"{% endif %}>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+{% endblock %}
