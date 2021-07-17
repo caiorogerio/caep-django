@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 17-Jul-2021 às 01:04
+-- Tempo de geração: 17-Jul-2021 às 01:21
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `django_admin_log` (
   PRIMARY KEY (`id`),
   KEY `django_admin_log_content_type_id_c4bce8eb` (`content_type_id`),
   KEY `django_admin_log_user_id_c564eba6` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `django_admin_log`
@@ -209,7 +209,8 @@ INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`,
 (18, '2021-07-17 00:50:14.903715', '1', '1', 2, '[{\"added\": {\"name\": \"shipping\", \"object\": \"2021-07-17 00:50:14.901713+00:00\"}}]', 10, 1),
 (19, '2021-07-17 00:51:03.190675', '3', '3', 2, '[{\"added\": {\"name\": \"payment\", \"object\": \"R$5 (Visa)\"}}]', 10, 1),
 (20, '2021-07-17 00:51:10.756020', '3', '3', 2, '[{\"added\": {\"name\": \"shipping\", \"object\": \"2021-07-17 00:51:10.754018+00:00\"}}]', 10, 1),
-(21, '2021-07-17 00:51:59.718219', '4', '4', 2, '[{\"added\": {\"name\": \"order item\", \"object\": \"Bon\\u00e9 (1)\"}}]', 10, 1);
+(21, '2021-07-17 00:51:59.718219', '4', '4', 2, '[{\"added\": {\"name\": \"order item\", \"object\": \"Bon\\u00e9 (1)\"}}]', 10, 1),
+(22, '2021-07-17 01:15:07.248821', '2', 'admin@caep.com.br', 1, '[{\"added\": {}}]', 9, 1);
 
 -- --------------------------------------------------------
 
@@ -319,7 +320,8 @@ CREATE TABLE IF NOT EXISTS `django_session` (
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
 ('jdt0cv8lgev029dw48cslyngh77znx01', 'eyJjYXJ0IjoyfQ:1m4YGk:rjDbsHeWoUzFMuHHwan5Wk6FyIJ5i7v-l1Gog3XZRiE', '2021-07-31 00:33:26.921473'),
-('2zj3ef97243uott8ggexzk4kni48ik74', '.eJxVjMsOwiAQRf-FtSHlDS7d-w1kgBmpGkhKuzL-uzbpQrf3nHNfLMK21rgNXOJc2JkJdvrdEuQHth2UO7Rb57m3dZkT3xV-0MGvveDzcrh_BxVG_dZoipDahEDaERmbjRQIygmFMjgsZpKkrSJdvJMBPKQ8EToQyoL3lNn7A9bNN-g:1m4YDH:rYbKrT4tLmX6l6Nni1Ej-DSTy4haEuHnqQMgvJJhtcc', '2021-07-31 00:29:51.167241');
+('2zj3ef97243uott8ggexzk4kni48ik74', '.eJxVjMsOwiAQRf-FtSHlDS7d-w1kgBmpGkhKuzL-uzbpQrf3nHNfLMK21rgNXOJc2JkJdvrdEuQHth2UO7Rb57m3dZkT3xV-0MGvveDzcrh_BxVG_dZoipDahEDaERmbjRQIygmFMjgsZpKkrSJdvJMBPKQ8EToQyoL3lNn7A9bNN-g:1m4YDH:rYbKrT4tLmX6l6Nni1Ej-DSTy4haEuHnqQMgvJJhtcc', '2021-07-31 00:29:51.167241'),
+('iyhcosbnkpoar1j9y9sbxuubwehob47x', '.eJxVjEsOAiEQBe_C2hA-gQaX7j0DaWiQUQPJMLMy3l1JZqHbqnrvxQLuWw37yGtYiJ2ZZqdfFjE9cpuC7thunafetnWJfCb8sINfO-Xn5Wj_DiqOOtckkyewRXhdiJI3qI0D67NS5AwWSeRt_HLpnEIBgATFJ4VSoIbI3h_61DhK:1m4Yv7:W9ngvSqKs2FC7YpKKvOprnuZS99AA0L05_82Fm1qk9M', '2021-07-31 01:15:09.526464');
 
 -- --------------------------------------------------------
 
@@ -365,14 +367,16 @@ CREATE TABLE IF NOT EXISTS `store_customer` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `store_customer`
 --
 
 INSERT INTO `store_customer` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `address`, `email`) VALUES
-(1, 'pbkdf2_sha256$260000$L1i6SVMsfFqZ2LTFLaMuKe$QSgFlvnODD09grk4B8Ur8Rn+TvqZNS1/gyI7NkFb+U0=', '2021-07-17 00:29:51.000000', 1, 'caiorogerio@gmail.com', 'Caio', 'Ribeiro', 1, 1, '2021-07-17 00:27:46.000000', 'Rua do Parque, 256', 'caiorogerio@gmail.com');
+(1, 'pbkdf2_sha256$260000$L1i6SVMsfFqZ2LTFLaMuKe$QSgFlvnODD09grk4B8Ur8Rn+TvqZNS1/gyI7NkFb+U0=', '2021-07-17 00:29:51.000000', 1, 'caiorogerio@gmail.com', 'Caio', 'Ribeiro', 1, 1, '2021-07-17 00:27:46.000000', 'Rua do Parque, 256', 'caiorogerio@gmail.com'),
+(2, 'caep2021', NULL, 0, 'admin@caep.com.br', 'Admin', 'CAEP', 1, 1, '2021-07-17 01:14:28.000000', 'Biênio', 'admin@caep.com.br'),
+(3, 'pbkdf2_sha256$260000$0zQHCvdsSlbXg09mMO3gqa$thFZOFbCqZgvekiWyqqA4AGJ9Y3aAk6XqLFH9cVdugM=', '2021-07-17 01:15:09.524284', 0, 'usuario@caep.com.br', 'Usuário', 'do Caep', 0, 1, '2021-07-17 01:15:09.117525', 'Prédio do Biênio', 'usuario@caep.com.br');
 
 -- --------------------------------------------------------
 
@@ -424,7 +428,7 @@ CREATE TABLE IF NOT EXISTS `store_order` (
   `address` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `store_order_customer_id_13d6d43e` (`customer_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `store_order`
@@ -435,7 +439,8 @@ INSERT INTO `store_order` (`id`, `created_at`, `updated_at`, `status`, `customer
 (2, '2021-07-17 00:33:26.911474', '2021-07-17 00:33:26.911474', 'Cart', NULL, ''),
 (3, '2021-07-17 00:38:59.414960', '2021-07-17 00:51:33.885033', 'Delivered', 1, 'Rua do Parque, 256'),
 (4, '2021-07-17 00:50:41.770573', '2021-07-17 00:51:59.716262', 'Closed', 1, 'Rua do Parque, 256'),
-(5, '2021-07-17 00:51:13.617652', '2021-07-17 00:51:13.618654', 'Cart', 1, 'Rua do Parque, 256');
+(5, '2021-07-17 00:51:13.617652', '2021-07-17 00:51:13.618654', 'Cart', 1, 'Rua do Parque, 256'),
+(6, '2021-07-17 01:06:54.808986', '2021-07-17 01:15:09.524284', 'Cart', 3, 'Prédio do Biênio');
 
 -- --------------------------------------------------------
 
