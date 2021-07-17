@@ -1,4 +1,5 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, \
+    PasswordResetForm, UserChangeForm, SetPasswordForm
 from store.models import Customer
 
 
@@ -11,6 +12,12 @@ class CustomerCreationForm(UserCreationForm):
             user.save()
         return user
 
+    class Meta:
+        model = Customer
+        fields = ('first_name', 'last_name', 'email', 'address')
+
+
+class CustomerChangeForm(UserChangeForm):
     class Meta:
         model = Customer
         fields = ('first_name', 'last_name', 'email', 'address')

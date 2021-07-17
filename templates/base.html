@@ -16,14 +16,17 @@
                     <li><a href="{% url 'home' %}">Sobre nós</a></li>
                     <li><a href="{% url 'info' %}">Informações</a></li>
                     <li><a href="{% url 'store' %}">Artigos</a></li>
-                    <li><a href="{% url 'signup' %}">Cadastro</a></li>
-                    <li><a href="{% url 'cart' %}">({% cart_count %}) R${% cart_price %}</a></li>
                     {% is_authenticated as is_authenticated %}
                     {% if is_authenticated %}
-                    <li>Olá, {% user 'first_name' %} | <a href="{% url 'logout' %}">Sair</a></li>
+                        <li>
+                            <span class="greeting">Olá, {% user 'first_name' %} | </span>
+                            <span class="orders"><a href="{% url 'orders' %}">Meus pedidos</a></span>
+                            <a href="{% url 'logout' %}" class="button">Sair</a>
+                        </li>
                     {% else %}
-                    <li><a href="{% url 'login' %}">Entrar</a></li>
+                        <li><a href="{% url 'login' %}" class="button">Entrar</a></li>
                     {% endif %}
+                    <li><a href="{% url 'cart' %}" class="cart">({% cart_count %}) R${% cart_price %}</a></li>
                 </nav>
             </div>
         </header>
@@ -31,7 +34,7 @@
         {% block content %}{% endblock %}
 
         <footer class="full-width">
-            <p>Copyright © 2021 CAEP - Proudly developped in s2 Diadema</p>
+            <p>Copyright © 2021 CAEP - Proudly developped at USP</p>
         </footer>
     </body>
 </html>

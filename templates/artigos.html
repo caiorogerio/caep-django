@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static l10n %}
 {% block content %}
         <main>
             <section id="article">
              <h1>Artigos</h1>
-                <ul>
+                <ul id="products">
                     {% for product in products %}
-                    <li>
+                    <li {% if not product.available %}class="disabled"{% endif %}>
                         <p class="image"><img src="{% static product.image %}" alt="Imagem de {{ product.title }}"></p>
                         <h1>{{ product.title }}</h1>
                         <p>{{ product.description }}</p>
-                        <h2>{{ product.price }}</h2>
+                        <h2>R${{ product.price | localize }}</h2>
                         <form action="{% url 'add-to-cart' %}" method="get">
                             <input type="hidden" name="product" value="{{ product.pk }}">
                             <input type="number" name="quantity" min="1" max="{{ product.disposal }}" {% if product.disposal <= 0 %}value="0" disabled="disabled"{% else %}value="1"{% endif %}>

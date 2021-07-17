@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static l10n %}
+{% block content %}
+        <main>
+            <section id="order">
+                <h1>Pedido {{ order.id }}</h1>
+                <ol id="tracking">
+                    {% for status, title in states.items %}
+                        <li {% if status == order.status %}class="status"{% endif %}>{{ title }}</li>
+                    {% endfor %}
+                </ol>
+                <div id="info">
+                    <div>
+                        <h2>Informações</h2>
+                        <dl>
+                            <dt>Feito em:</dt>
+                            <dd>{{ order.created_at | date:'d/m/Y' }}</dd>
+                        </dl>
+                    </div>
+                    <div>
+                        <h2>Endereço de entrega</h2>
+                        <p>{{ order.address }}</p>
+                    </div>
+                    {% if order.payments.count > 0 %}
+                    <div>
+                        <h2>Meios de pagamento</h2>
+                        <ul>
+                            {% for payment in order.payments.all %}
+                                <li>{{ payment.type }} - R${{ payment.value | localize }} em {{ payment.created_at | date:'d/m/Y' }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% if order.shipping %}
+                    <div>
+                        <h2>Envio</h2>
+                        <dl>
+                            <dt>Feito em:</dt>
+                            <dd>{{ order.shipping.created_at | date:'d/m/Y' }}</dd>
+                            <dt>Transportadora:</dt>
+                            <dd>{{ order.shipping.type }}</dd>
+                            {% if order.status == 'Delivered' %}
+                            <dt>Entregue em:</dt>
+                            <dd>{{ order.updated_at | date:'d/m/Y' }}</dd>
+                            {% elif order.shipping.estimated_delivery %}
+                            <dt>Entrega prevista para:</dt>
+                            <dd>{{ order.shipping.estimated_delivery | date:'d/m/Y' }}</dd>
+                            {% endif %}
+                            {% if order.shipping.tracking_number %}
+                            <dt>Código de rastreio:</dt>
+                            <dd onclick="document.forms.tracking.submit()">{{ order.shipping.tracking_number }}</dd>
+                            <form name="tracking" action="https://www2.correios.com.br/sistemas/rastreamento/ctrl/ctrlRastreamento.cfm" method="post" target="_blank">
+                                <input type="hidden" name="acao" value="track">
+                                <input type="hidden" name="objetos" value="{{ order.shipping.tracking_number }}">
+                            </form>
+                            {% endif %}
+                        </dl>
+                    </div>
+                    {% endif %}
+                </div>
+                <ul id="products">
+                    {% for product in order.products.all %}
+                    <li>
+                        <p class="image"><img src="{% static product.image %}" alt="Imagem de {{ product.title }}"></p>
+                        <h1>{{ product.title }}</h1>
+                        <p>{{ product.description }}</p>
+                        <h2>R${{ product.price | localize }}</h2>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <h2>Total da compra: R${{ order.total_price | localize }}</h2>
+                {% if order.status == 'Shipped' %}
+                <p><a class="button" href="{% url 'order-delivered' order.id %}">Confirmar entrega de pedido</a></p>
+                {% endif %}
+            </section>
+        </main>
+{% endblock %}

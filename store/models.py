@@ -1,4 +1,5 @@
 from core import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.signals import user_logged_in
 from django.utils.translation import gettext_lazy as _
@@ -126,12 +127,65 @@ class SupplyItem(models.Model):
         return '%s (%d)' % (self.product, self.quantity)
 
 
+class OrderQuerySet(models.QuerySet):
+    CLOSED_STATES = ('Closed', 'Paid', 'Shipped', 'Delivered',)
+
+    def post_close(self):
+        q = Q()
+        for status in self.CLOSED_STATES:
+            q |= Q(status=status)
+        return self.filter(q)
+
+    def closed(self):
+        return self.filter(status='Closed')
+
+    def paid(self):
+        return self.filter(status='Paid')
+
+    def shipped(self):
+        return self.filter(status='Shipped')
+
+    def delivered(self):
+        return self.filter(status='Delivered')
+
+
+class OrderManager(models.Manager):
+    def get_queryset(self):
+        return OrderQuerySet(self.model, using=self._db)
+
+    def post_close(self):
+        return self.get_queryset().post_close()
+
+    def closed(self):
+        return self.get_queryset().closed()
+
+    def paid(self):
+        return self.get_queryset().paid()
+
+    def shipped(self):
+        return self.get_queryset().shipped()
+
+    def delivered(self):
+        return self.get_queryset().delivered()
+
+
 class Order(models.Model):
-    STATES = ('Cart', 'Paid', 'Shipped', 'Canceled')
+    STATES = ('Cart', 'Closed', 'Paid', 'Shipped', 'Delivered', 'Canceled')
     STATES = [(i, i) for i in STATES]
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     products = models.ManyToManyField(Product, through='OrderItem')
     status = models.CharField(max_length=10, choices=STATES, default='Cart')
+    address = models.CharField(_('Address'), max_length=1024)
+
+    objects = OrderManager()
+
+    def __str__(self):
+        return str(self.id)
+
+    def save(self, *args, **kwargs):
+        if self.customer:
+            self.address = self.customer.address
+        super(Order, self).save(*args, **kwargs)
 
     @property
     def total_price(self):
@@ -149,6 +203,29 @@ class Order(models.Model):
         })
         order_item.quantity = quantity
         order_item.save()
+
+    def close(self):
+        self.status = 'Closed'
+        self.save()
+
+    def cancel(self):
+        self.status = 'Canceled'
+        self.save()
+
+    def paid(self):
+        self.status = 'Paid'
+        self.save()
+
+    def shipped(self):
+        self.status = 'Shipped'
+        self.save()
+
+    def delivered(self):
+        self.status = 'Delivered'
+        self.save()
+
+    def closed(self, *args, **kwargs):
+        return self.objects.filter(Q(status='Closed') | Q(status='Paid') | Q(status='Shipped') | Q(status='Delivered'))
 
 
 class OrderItem(models.Model):
@@ -168,3 +245,37 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return '%s (%d)' % (self.product, self.quantity)
+
+
+class Payment(models.Model):
+    TYPES = ('Visa', 'Mastercard', 'Elo', 'Pix', 'Boleto', 'Dinheiro')
+    TYPES = [(i, i) for i in TYPES]
+    order = models.ForeignKey(Order, related_name='payments', on_delete=models.CASCADE)
+    value = models.DecimalField(max_digits=6, decimal_places=2)
+    type = models.CharField(max_length=15, choices=TYPES)
+
+    def __str__(self):
+        return 'R$%s (%s)' % (self.value, self.type)
+
+    def save(self, *args, **kwargs):
+        super(Payment, self).save(*args, **kwargs)
+        total_paid = self.order.payments.aggregate(models.Sum('value'))['value__sum']
+
+        if total_paid >= self.order.total_price:
+            self.order.paid()
+
+
+class Shipping(models.Model):
+    TYPES = ('Correios', 'Mercado Livre', 'Rappi', 'Em mãos')
+    TYPES = [(i, i) for i in TYPES]
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    type = models.CharField(max_length=15, choices=TYPES)
+    estimated_delivery = models.DateField(blank=True)
+    tracking_number = models.CharField(max_length=13, blank=True)
+
+    def __str__(self):
+        return str(self.created_at)
+
+    def save(self, *args, **kwargs):
+        super(Shipping, self).save(*args, **kwargs)
+        self.order.shipped()

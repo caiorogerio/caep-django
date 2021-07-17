@@ -104,7 +104,7 @@ header h1 a abbr {
 
 header nav {
 	float: right;
-	margin: 35px 0;
+	margin: 28px 0;
     list-style: none;
 }
 
@@ -113,7 +113,35 @@ header nav li {
 	white-space: nowrap;
 	font-weight: normal;
 	font-size: 24px;
-	margin: 0 10px;
+	margin: 0 8px;
+}
+
+header nav li span.greeting,
+header nav li span.orders {
+	font-size: 10px;
+}
+
+header nav li span.orders a:hover {
+	text-decoration: underline;
+}
+
+header nav li a.cart {
+	display: inline-block;
+	border: 5px solid #33A038;
+	border-radius: 5px;
+	padding: 5px 10px;
+	background: transparent url("images/cart.svg") no-repeat 10px center;
+	background-size: 30px 30px;
+	padding-left: 40px;
+}
+
+header nav li a.button {
+	display: inline-block;
+	cursor: pointer;
+	background: #33A038;
+	color: #FFFFFF;
+	padding: 10px 20px;
+	border-radius: 5px;
 }
 
 section {
@@ -253,31 +281,143 @@ main > section {
 }
 
 #article ul {
+	display: flex;
+	flex-wrap: wrap;
 	list-style: none;
 	padding: 0px;
 	overflow: visible;
 }
 
-#article li {
+#products li {
+	position: relative;
 	width: 215px;
-	height: 275px;
 	background: #EFEFEF;
 	border-radius: 10px;
 	display: inline-block;
 	white-space: nowrap;
-	text-align: middle;
 	margin: 0 0 30px 30px;
 	list-style: none;
 	white-space: normal;
+	font-size: 20px;
+	overflow: hidden;
+	/*border: 1px solid #fff;*/
+	padding: 20px 0 90px 0;
+	box-shadow: 2px 3px 14px 5px rgba(27,27,27,0.46);
 }
 
-#article li img {
+#products li.disabled:before {
+	content: "Esgotado";
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 2;
+	font-size: 25px;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 200px;
+	color: #33A038;
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
+#products li img {
 	max-width: 215px;
 	max-height: 275px;
 }
 
-#article li:nth-child(4n+1) {
+#products li:nth-child(4n+1) {
 	margin-left: 0;
+}
+
+#products li h1,
+#products li h1 + p,
+#products li h2 {
+	font-size: 20px;
+	color: #1b1b1b;
+	text-align: center;
+	margin: 0 auto;
+}
+
+#products li h1 {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: #33A038;
+	color: #fff;
+	padding: 10px 0;
+}
+
+#products li h1 + p {
+	line-height: 20px;
+}
+
+#products li h2 {
+	position: absolute;
+	bottom: 40px;
+	right: 0;
+	left: 0;
+	padding: 10px 0;
+	background-color: #1b1b1b;
+	color: #eeeeee;
+	text-align: center;
+	font-weight: bold;
+}
+
+#products li form {
+	white-space: nowrap;
+	margin-top: 10px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+
+#products li input[type=number],
+#products li input[type=submit]{
+	display: inline-block;
+	width: 50%;
+	padding: 10px 0;
+	margin: 0;
+	border: 0;
+	font: 15px bold;
+	font-family: inherit;
+}
+
+#products li input[type=number] {
+	text-align: center;
+}
+
+#products li input[type=number]::-webkit-inner-spin-button,
+#products li input[type=number]::-webkit-outer-spin-button {
+	opacity: 1;
+	margin: 0;
+	background: #33A038;
+}
+
+#products li input[type=submit] {
+	background: #33A038;
+	color: #FFFFFF;
+}
+
+#article > h2 {
+	border-top: 1px solid #FFFFFF;
+	padding: 10px 0;
+	font-size: 20px;
+}
+
+#article .button {
+	display: block;
+	width: calc(100% - 40px);
+	background: #fff;
+	padding: 10px 20px;
+	border-radius: 10px;
+	border: 0;
+	font: inherit;
+	color: #33a038;
+	text-align: center;
 }
 
 #mural h2 {
@@ -400,4 +540,192 @@ main h1{
 	font-size: 48px;
 	text-align: center;
 	color: #FFFFFF;
+}
+
+#form {
+	width: 50%;
+	margin: 0 auto;
+}
+
+#form h2 {
+	font-weight: bold;
+	font-size: 36px;
+	text-align: left;
+	color: #FFFFFF;
+}
+
+#form p {
+	line-height: 100%;
+	font-weight: 500;
+	font-size: 28px;
+	text-align: left;
+	color: #FFFFFF;
+}
+
+#form ul,
+#form .helptext {
+	margin: 5px 0;
+	font-size: 16px;
+}
+
+#form form label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+#form form label::after {
+	display: inline-block;
+}
+
+#form form input,
+#form form textarea,
+#form p a.button {
+	display: block;
+	width: calc(100% - 40px);
+	background: #fff;
+	padding: 10px 20px;
+	border-radius: 10px;
+	border: 0;
+	font: inherit;
+	color: #33a038;
+}
+
+#form form input:focus,
+#form form textarea:focus {
+	outline: none;
+	box-shadow: 0 0 3pt 2pt orangered;
+}
+
+
+#form form input::placeholder,
+#form form textarea::placeholder {
+	color: #ccc;
+}
+
+#form form input:invalid {
+	box-shadow: 0 0 3pt 2pt red;
+	color: red;
+}
+
+#form form textarea {
+	min-height: 300px;
+}
+
+#form form .buttons {
+	text-align: right;
+}
+
+#form form input[type='submit'],
+#form p a.button {
+	display: inline-block;
+	/*width: 200px;*/
+	padding: 10px 0;
+	width: 100%;
+	cursor: pointer;
+	font-size: 24px;
+	text-align: center;
+}
+
+#form form > * {
+	margin: 10px 0;
+}
+
+#order ol {
+	display: flex;
+	justify-content: center;
+	white-space: nowrap;
+	margin: 0 auto 30px auto;
+}
+
+#order ol li {
+	width: 200px;
+	position: relative;
+	white-space: normal;
+	text-align: center;
+}
+
+#order ol li:before {
+	align-self: flex-start;
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: 3px solid #ffefef;
+	background: #ffefef;
+	margin: 0 auto 20px auto;
+	z-index: 2;
+}
+
+#order ol li:after {
+	display: block;
+	content: "";
+	position: absolute;
+	top: 25px;
+	left: 128px;
+	width: 100%;
+	height: 3px;
+	background: #ffefef;
+}
+
+#order ol li:last-child:after {
+	display: none;
+}
+
+#order ol li.status ~ li {
+	color: rgba(255,255,255,0.3);
+}
+
+#order ol li.status ~ li:before {
+	background: #33A038;
+	border-color: rgba(255,255,255,0.3);
+}
+
+#order ol li.status:after,
+#order ol li.status ~ li:after {
+	background-color: rgba(255,255,255,0.3);
+}
+
+#order #info {
+	display: flex;
+	justify-content: space-around;
+	background-color: #ffefef;
+	color: #33A038;
+	box-shadow: 2px 3px 14px 5px rgba(27,27,27,0.46);
+	padding: 50px;
+	margin-bottom: 50px;
+	font-size: 16px;
+}
+
+#order #info h2 {
+	font-size: 24px;
+	margin-bottom: 20px;
+}
+
+#order #info dt {
+	font-weight: bold;
+}
+
+#order #info dd[onclick] {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#order .button {
+	display: block;
+	width: calc(100% - 40px);
+	background: #fff;
+	padding: 10px 20px;
+	border-radius: 10px;
+	border: 0;
+	font: inherit;
+	color: #33a038;
+	text-align: center;
+}
+
+
+#order > h2 {
+	border-top: 1px solid #FFFFFF;
+	padding: 10px 0;
+	font-size: 20px;
 }

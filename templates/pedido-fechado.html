@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static l10n %}
+{% block content %}
+        <main>
+            <section id="cart">
+                <h1>Seu pedido foi finalizado com sucesso</h1>
+                <p>O seu pedido, de número {{ order.id }} foi finalizado com sucesso. Aguardo o contato de um CAEPer para pagar e receber seu pedido.</p>
+            </section>
+        </main>
+{% endblock %}

@@ -1,8 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib import auth
-from store.models import Product, Customer, get_cart
-from store.forms import CustomerCreationForm, AuthenticationForm
-from django.utils.translation import gettext_lazy as _
+from store.models import Product, Customer, Order, get_cart
+from store.forms import *
 
 
 def signup(request):
@@ -18,7 +17,42 @@ def signup(request):
     else:
         form = CustomerCreationForm()
     return render(request, 'form.html', {
-        'title': _('My profile'),
+        'title': 'Meu perfil',
+        'submit': 'Cadastrar',
+        'form': form
+    })
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(from_email='default@caep.tk', request=request)
+            return redirect('cart')
+    else:
+        form = PasswordResetForm()
+    return render(request, 'form.html', {
+        'title': 'Esqueci minha senha',
+        'submit': 'Enviar nova senha',
+        'form': form
+    })
+
+
+def reset_password(request, uidb64, token):
+    form = SetPasswordForm()
+
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = CustomerChangeForm(None, request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cart')
+    else:
+        form = CustomerChangeForm()
+    return render(request, 'form.html', {
+        'title': 'Meu perfil',
+        'submit': 'Salvar',
         'form': form
     })
 
@@ -28,11 +62,16 @@ def login(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             auth.login(request, form.get_user())
-            return redirect('cart')
+            return redirect('store')
     else:
         form = AuthenticationForm()
     return render(request, 'form.html', {
-        'title': _('Login'),
+        'title': 'Login',
+        'submit': 'Entrar',
+        'buttons': {
+            'Cadastro': reverse('signup'),
+            'Esqueci minha senha': reverse('forgot-password'),
+        },
         'form': form
     })
 
@@ -58,3 +97,39 @@ def cart(request):
     return render(request, 'carrinho.html', {
         'order': get_cart(request)
     })
+
+
+def clear_cart(request):
+    get_cart(request).close()
+    return redirect('cart')
+
+
+def close_order(request):
+    order = get_cart(request)
+    order.close()
+    return render(request, 'pedido-fechado.html', {
+        'order': order
+    })
+
+
+def orders(request):
+    return render(request, 'pedidos.html', {
+        'orders': Order.objects.post_close().filter(customer=request.user).order_by('-created_at')
+    })
+
+
+def order(request, id):
+    return render(request, 'pedido.html', {
+        'states': {
+            'Closed': 'Pedido fechado',
+            'Paid': 'Pagamento confirmado',
+            'Shipped': 'Enviado',
+            'Delivered': 'Pedido entregue',
+        },
+        'order': Order.objects.get(pk=id)
+    })
+
+
+def order_delivered(request, id):
+    Order.objects.get(pk=id).delivered()
+    return redirect('order', id=id)
