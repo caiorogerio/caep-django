@@ -729,3 +729,47 @@ main h1{
 	padding: 10px 0;
 	font-size: 20px;
 }
+
+#orders table {
+	width: 100%;
+}
+
+#orders table th,
+#orders table td {
+	padding: 20px 10px;
+	border-left: 1px solid #33A038;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#orders table td:first-child {
+	font-size: 24px;
+}
+
+#orders table td:first-child a {
+	display: inline-block;
+	background-color: #ffefef;
+	color: #33A038;
+	padding: 10px 0;
+	width: 50px;
+	border-radius: 50%;
+	font-weight: bold;
+}
+
+#orders table td a {
+	/*text-decoration: underline;*/
+}
+
+#orders table thead {
+	background-color: rgba(255,255,255,0.8);
+	color: #33A038;
+	font-weight: bold;
+}
+
+#orders table tbody tr:nth-child(2n) {
+	background-color: rgba(255,255,255,0.1);
+}
+
+#orders table tbody tr:nth-child(2n + 1) {
+	background-color: rgba(255,255,255,0.2);
+}

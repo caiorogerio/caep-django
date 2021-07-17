@@ -4,17 +4,31 @@
         <main>
             <section id="orders">
                 <h1>Meus pedidos</h1>
-                <ul>
+
+                <table>
+                    <thead>
+                        <th>Número de pedido</th>
+                        <th>Produtos</th>
+                        <th>Data</th>
+                        <th>Preço</th>
+                    </thead>
+                    <tbody>
                     {% for order in orders %}
-                    <li>
-                        <a href="{% url 'order' order.id %}">
-                            <span>{{ order.created_at | date:'d/m/Y' }}</span>
-                            <span>{{ order.id }}</span>
-                            <span>R${{ order.total_price }}</span>
-                        </a>
-                    </li>
+                    <tr>
+                        <td><a href="{% url 'order' order.id %}">{{ order.id }}</a></td>
+                        <td>
+                            <ul>
+                                {% for item in order.order_items.all %}
+                                <li>{{ item.quantity }} x {{ item.product.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>{{ order.created_at | date:'d/m/Y' }}</td>
+                        <td>R${{ order.total_price }}</td>
+                    </tr>
                     {% endfor %}
-                </ul>
+                    </tbody>
+                </table>
             </section>
         </main>
 {% endblock %}
