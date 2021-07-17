@@ -8,6 +8,7 @@ django-tinymce==3.3.0
 et-xmlfile==1.1.0
 gunicorn==20.1.0
 MarkupPy==1.14
+mysqlclient==2.0.3
 odfpy==1.4.1
 openpyxl==3.0.7
 Pillow==8.2.0
